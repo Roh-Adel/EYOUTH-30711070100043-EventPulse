@@ -20,6 +20,17 @@ const announcementRoutes = require('./routes/announcements.routes');
 
 const app = express();
 
+app.get('/health', (req, res) => {
+  const dbStates = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+
+  res.status(200).json({
+    status: 'ok',
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    database: dbStates[require('mongoose').connection.readyState]
+  });
+});
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(mongoSanitize());
