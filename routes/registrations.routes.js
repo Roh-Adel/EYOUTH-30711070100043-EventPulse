@@ -1,5 +1,9 @@
 const router = require('express').Router();
 
+const { body } = require('express-validator');
+
+const validate = require('../middleware/validate');
+
 const requireAuth = require('../middleware/requireAuth');
 
 const {
@@ -11,6 +15,12 @@ const {
 // Register for an event
 router.post(
   '/',
+  [
+    body('eventId')
+      .isMongoId()
+      .withMessage('Event ID must be a valid MongoId')
+  ],
+  validate,
   requireAuth,
   registerForEvent
 );
