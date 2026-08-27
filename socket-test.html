@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.io Test</title>
+</head>
+<body>
+
+  <h1>Socket.io Test</h1>
+
+  <button id="connectBtn">Connect</button>
+
+  <br><br>
+
+  <input
+    type="text"
+    id="eventId"
+    placeholder="Enter Event ID"
+    style="width: 300px;"
+  >
+
+  <button id="joinBtn">Join Event</button>
+
+  <h3>Announcements:</h3>
+  <div id="messages"></div>
+
+  <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+  <script>
+    let socket;
+
+    document.getElementById('connectBtn').addEventListener('click', () => {
+
+      socket = io('http://localhost:3000');
+
+      socket.on('connect', () => {
+        console.log('Connected:', socket.id);
+      });
+
+      socket.on('announcement', (message) => {
+        console.log('New announcement:', message);
+
+        const div = document.createElement('div');
+        div.textContent = message.text;
+
+        document.getElementById('messages').appendChild(div);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('Disconnected');
+      });
+
+    });
+
+    document.getElementById('joinBtn').addEventListener('click', () => {
+
+      const eventId = document.getElementById('eventId').value;
+
+      if (!socket) {
+        alert('Connect to the server first');
+        return;
+      }
+
+      socket.emit('join-event', eventId);
+
+      console.log('Joined event:', eventId);
+    });
+  </script>
+
+</body>
+</html>
