@@ -6,7 +6,7 @@ const asyncHandler = require('../utils/asyncHandler');
 // REGISTER FOR EVENT
 exports.registerForEvent = asyncHandler(async (req, res, next) => {
   const userId = req.user.userId;
-  const eventId = req.body.event;
+  const eventId = req.body.eventId;
 
   // Check if event exists
   const event = await Event.findById(eventId);
