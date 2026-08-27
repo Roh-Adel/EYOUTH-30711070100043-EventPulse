@@ -94,8 +94,6 @@ async function start() {
 
 if (require.main === module) {
   start();
-} else {
-  connectDB();
 }
 
 module.exports = app;
