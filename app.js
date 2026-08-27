@@ -1,6 +1,8 @@
 require('dotenv').config();
 
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 const morgan = require('morgan');
 const mongoSanitize = require('@exortek/express-mongo-sanitize');
 const http = require('http');
@@ -34,6 +36,7 @@ app.get('/health', (req, res) => {
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(mongoSanitize());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
