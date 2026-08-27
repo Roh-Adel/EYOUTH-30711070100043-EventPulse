@@ -22,7 +22,9 @@ const announcementRoutes = require('./routes/announcements.routes');
 
 const app = express();
 
-app.get('/health', (req, res) => {
+app.get('/health', async (req, res) => {
+  await connectDB();
+
   const dbStates = ['disconnected', 'connected', 'connecting', 'disconnecting'];
 
   res.status(200).json({
@@ -32,7 +34,6 @@ app.get('/health', (req, res) => {
     database: dbStates[require('mongoose').connection.readyState]
   });
 });
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(mongoSanitize());
