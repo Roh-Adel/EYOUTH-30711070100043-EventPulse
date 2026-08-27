@@ -94,6 +94,8 @@ async function start() {
 
 if (require.main === module) {
   start();
+} else if (process.env.NODE_ENV !== 'test') {
+  connectDB();
 }
 
 module.exports = app;
